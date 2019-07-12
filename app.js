@@ -66,16 +66,31 @@ app.use(flash());
 passport.use(new LocalStrategy({
 	passReqToCallback: true
 }, (req, username, password, next) => {
-	User.findOne({ username }, (err, user) => {
+	User.findOne({username}, (err, user) => {
 		if (err) {
 			return next(err);
 		}
 		if (!user) {
 			return next(null, false, {message: "usuario incorrecto"});
 		}
+
 		if (!bcrypt.compareSync(password, user.password)) {
+
+			//TODO incremenar contador de intentos
+
+			let fnIncrementas = async () => {
+				// const query = {_id: user._id};
+				// const update = {}
+				// User.findOneAndUpdate(query, update, {new: true}).exec(function (err, docs) {
+				// 	console.log(docs)
+				// })
+			};
+
 			return next(null, false, {message: "Incorrect password"});
 		}
+
+		//TODO RESET contador de intentos
+
 
 		return next(null, user);
 	});
