@@ -17,17 +17,18 @@ const bcryptSalt = 10;
 
 
 const BuilderJsonresponse = {
-	Success: (res, dataResponse) => {
+	Success: (res, isAutorizado, dataResponse) => {
 
 		let data = {
 			success: true,
+			isAllow: isAutorizado,
 			msg: '',
 			data: dataResponse
 		};
 
 		res.status(200).json(data);
 	},
-	Error: (res, error, code = 500) => {
+	Error: (res,  error, code = 500) => {
 		let data = {
 			success: false,
 			msg: error
@@ -102,7 +103,7 @@ apiRoutes.get("/auth/google/callback", passport.authenticate("google", {
 
 let validarRole = (req, role = '') => {
 
-	return true; // <--------------- temporalmente vemos si esta funcionado
+	return false; // <--------------- temporalmente vemos si esta funcionado
 
 	if (!req.isAuthenticated()) {
 		return false;
@@ -120,19 +121,18 @@ let validarRole = (req, role = '') => {
 
 
 apiRoutes.get('/private-only-admin', (req, res) => {
-
 	let isAutorizado = validarRole(req, 'ADMIN');
-	BuilderJsonresponse.Success(res, {isAllow: isAutorizado});
+	BuilderJsonresponse.Success(res, isAutorizado,{});
 });
 
 apiRoutes.get('/private_page', (req, res) => {
 	let isAutorizado = validarRole(req);
-	BuilderJsonresponse.Success(res, {isAllow: isAutorizado});
+	BuilderJsonresponse.Success(res, isAutorizado,{});
 });
 
 apiRoutes.get('/room', (req, res) => {
 	let isAutorizado = validarRole(req);
-	Buil(res, {isAllow: isAutorizado});
+	BuilderJsonresponse.Success(res, isAutorizado,{});
 });
 
 
