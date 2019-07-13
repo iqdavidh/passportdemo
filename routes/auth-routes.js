@@ -98,10 +98,13 @@ authRoutes.get("/logout", (req, res) => {
 });
 
 
-const ensureLogin = require("connect-ensure-login");
+//const ensureLogin = require("connect-ensure-login");
 
-authRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-	res.render("private", { user: req.user });
-});
+// authRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
+// 	res.render("private", { user: req.user });
+// });
+
+
+
 
 module.exports = authRoutes;

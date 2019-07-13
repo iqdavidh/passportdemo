@@ -10,7 +10,14 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
 	username: String,
 	password: String,
-	intentosLogin: Number
+	name: String,
+	email: String,
+	intentosLogin: Number,
+	role: {
+		type: String,
+		enum: ['GUEST', 'EDITOR', 'ADMIN'],
+		default: 'GUEST'
+	},
 }, {
 	timestamps: {createdAt: "created_at", updatedAt: "updated_at"}
 });
