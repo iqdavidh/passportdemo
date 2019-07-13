@@ -1,3 +1,12 @@
+{{#unless user}}
+    Home page
+    <div>
+        <a href="/auth/google">Login</a>
+    </div>
+{{/unless}}
+
+
+
 <form action="/login" method="POST">
     <div>
         <label for="username">Username:</label>
@@ -16,6 +25,8 @@
         <input type="submit" value="Log In">
     </div>
 </form>
+
+
 
 
 

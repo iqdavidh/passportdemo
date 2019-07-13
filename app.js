@@ -11,7 +11,7 @@ const path = require('path');
 const flash = require("connect-flash");
 
 const User = require("./models/user");
-
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
 mongoose
 	.connect('mongodb://localhost/passportdemo', {useNewUrlParser: true})
@@ -94,6 +94,35 @@ passport.use(new LocalStrategy({
 
 		return next(null, user);
 	});
+}));
+
+let credenciales = require("../client_secret-gplus");
+
+passport.use(new GoogleStrategy({
+	clientID: credenciales.web.client_id,
+	clientSecret: credenciales.web.client_secret,
+	callbackURL: "/auth/google/callback"
+}, (accessToken, refreshToken, profile, done) => {
+	User.findOne({googleID: profile.id})
+		.then(user => {
+
+			if (user) {
+				return done(null, user);
+			}
+
+			const newUser = new User({
+				googleID: profile.id
+			});
+
+			newUser.save()
+				.then(user => {
+					done(null, newUser);
+				})
+		})
+		.catch(error => {
+			done(error)
+		})
+
 }));
 
 

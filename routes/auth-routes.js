@@ -63,6 +63,20 @@ authRoutes.post("/login", passport.authenticate("local", {
 	passReqToCallback: true
 }));
 
+
+authRoutes.get("/auth/google", passport.authenticate("google", {
+	scope: ["https://www.googleapis.com/auth/plus.login",
+		"https://www.googleapis.com/auth/plus.profile.emails.read"]
+}));
+
+authRoutes.get("/auth/google/callback", passport.authenticate("google", {
+	failureRedirect: "/",
+	successRedirect: "/private-page"
+}));
+
+
+
+
 authRoutes.get("/logout", (req, res) => {
 	req.logout();
 	res.redirect("/login");
