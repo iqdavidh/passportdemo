@@ -96,7 +96,7 @@ passport.use(new LocalStrategy({
 	});
 }));
 
-let credenciales = require("../client_secret-gplus");
+let credenciales = require("../../client_secret-gplus");
 
 passport.use(new GoogleStrategy({
 	clientID: credenciales.web.client_id,
@@ -127,7 +127,7 @@ passport.use(new GoogleStrategy({
 
 
 let Auth0Strategy = require('passport-auth0');
-let clavesAuth0 = require("../claves-auth0");
+let clavesAuth0 = require("../../claves-auth0");
 
 
 passport.use(new Auth0Strategy({
