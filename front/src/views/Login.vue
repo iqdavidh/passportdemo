@@ -12,12 +12,13 @@
                 >
                     <div class="form-group">
                         <label>User</label>
-                        <input type="text" v-model="formlogin.user" required="required" class="form-control"/>
+                        <input type="text" v-model="formlogin.data.user" required="required" class="form-control"/>
                     </div>
 
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" v-model="formlogin.password" required="required" class="form-control"/>
+                        <input type="password" v-model="formlogin.data.password" required="required"
+                               class="form-control"/>
                     </div>
 
                     <button class="btn btn-primary" type="submit">
@@ -46,8 +47,7 @@
 			}
 		},
 		methods: {
-			enviarDatos: function () {
-
+			solicitarLogin: function () {
 
 				if (this.formlogin.isEnProceso) {
 					return;
@@ -63,7 +63,8 @@
 				}
 
 
-				const urlLogin = UrlApi.login;
+				const urlLogin = "http://localhost:3000/api/login";
+
 
 				fetch(urlLogin, {
 					mode: 'cors',
@@ -75,19 +76,19 @@
 					body: JSON.stringify(dataLogin)
 				})
 					.then((response) => {
-						let data = response.data;
-						if (data.success === "success") {
-                          //es redireccionamiento ok
-
-						} else {
-							alert(data.msg);
-
-
-						}
 						return response.json();
+					}).then((payload) => {
 
-					}).then((json) => {
-					alert(json.text);
+					if (payload.success === true) {
+						//aqui ya podemos validar si hya un acceso
+						if (!payload.isAutorizado) {
+							//No tiene acceso TODO redirect home
+							alert('no autorizado');
+						}
+					} else {
+						alert(payload.msg);
+					}
+
 				}).catch(error => {
 
 					alert(error);

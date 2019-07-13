@@ -26,5 +26,10 @@ const UrlApi = {
 
 new Vue({
 	router,
+	methods:{
+		m1(){
+			alert('m');
+		}
+	},
 	render: h => h(App)
 }).$mount('#app');

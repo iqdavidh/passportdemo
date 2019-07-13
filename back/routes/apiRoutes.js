@@ -14,8 +14,6 @@ const bcrypt = require("bcryptjs");
 const bcryptSalt = 10;
 
 
-
-
 const BuilderJsonresponse = {
 	Success: (res, isAutorizado, dataResponse) => {
 
@@ -28,7 +26,7 @@ const BuilderJsonresponse = {
 
 		res.status(200).json(data);
 	},
-	Error: (res,  error, code = 500) => {
+	Error: (res, error, code = 500) => {
 		let data = {
 			success: false,
 			msg: error
@@ -76,13 +74,10 @@ apiRoutes.post("/signup", (req, res, next) => {
 });
 
 
-/*TODO <----- corregir esto, no estamos regresando un json*/
-apiRoutes.post("/login", passport.authenticate("local", {
-	successRedirect: "/private-page",
-	failureRedirect: "/login",
-	failureFlash: true,
-	passReqToCallback: true
-}));
+apiRoutes.post("/login", passport.authenticate("local"), (req, res) => {
+	let isAutorizado = validarRole(req);
+	BuilderJsonresponse.Success(res, isAutorizado, {});
+});
 
 apiRoutes.get("/logout", (req, res) => {
 	req.logout();
@@ -122,20 +117,18 @@ let validarRole = (req, role = '') => {
 
 apiRoutes.get('/private-only-admin', (req, res) => {
 	let isAutorizado = validarRole(req, 'ADMIN');
-	BuilderJsonresponse.Success(res, isAutorizado,{});
+	BuilderJsonresponse.Success(res, isAutorizado, {});
 });
 
 apiRoutes.get('/private_page', (req, res) => {
 	let isAutorizado = validarRole(req);
-	BuilderJsonresponse.Success(res, isAutorizado,{});
+	BuilderJsonresponse.Success(res, isAutorizado, {});
 });
 
 apiRoutes.get('/room', (req, res) => {
 	let isAutorizado = validarRole(req);
-	BuilderJsonresponse.Success(res, isAutorizado,{});
+	BuilderJsonresponse.Success(res, isAutorizado, {});
 });
-
-
 
 
 /*

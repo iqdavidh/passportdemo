@@ -13,6 +13,8 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },mounted() {
+    //appVue.m1();
   }
 }
 </script>
