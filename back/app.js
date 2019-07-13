@@ -13,6 +13,8 @@ const flash = require("connect-flash");
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
+const cors=require("cors");
+
 mongoose
 	.connect('mongodb://localhost/passportdemo', {useNewUrlParser: true})
 	.then(x => {
@@ -26,6 +28,9 @@ const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
 const app = express();
+
+app.use(cors());
+
 
 // Middleware Setup
 app.use(logger('dev'));
@@ -171,6 +176,11 @@ app.use('/', authRoutes);
 
 const index = require('./routes/index');
 app.use('/', index);
+
+//Api
+const apiRoutes = require('./routes/apiRoutes');
+app.use('/api', apiRoutes);
+
 
 
 
