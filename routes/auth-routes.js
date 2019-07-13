@@ -74,7 +74,22 @@ authRoutes.get("/auth/google/callback", passport.authenticate("google", {
 	successRedirect: "/private-page"
 }));
 
+/*auth0 ********************************************************* */
 
+authRoutes.get("/auth/auth0", passport.authenticate("auth0",
+	{ failureRedirect: '/login' }));
+
+
+
+authRoutes.get('/auth/auth0/callback',
+	passport.authenticate('auth0', { failureRedirect: '/login' }),
+	function(req, res) {
+		if (!req.user) {
+			throw new Error('user null');
+		}
+		res.redirect("/private-page");
+	}
+);
 
 
 authRoutes.get("/logout", (req, res) => {

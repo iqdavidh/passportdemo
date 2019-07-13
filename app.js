@@ -126,6 +126,25 @@ passport.use(new GoogleStrategy({
 }));
 
 
+let Auth0Strategy = require('passport-auth0');
+let clavesAuth0 = require("../claves-auth0");
+
+
+passport.use(new Auth0Strategy({
+		domain: 'iqdavidh.auth0.com',
+		clientID: clavesAuth0.id,
+		clientSecret: clavesAuth0.secret,
+		callbackURL: '/auth/auth0/callback'
+	},
+	function (accessToken, refreshToken, extraParams, profile, done) {
+		// accessToken is the token to call Auth0 API (not needed in the most cases)
+		// extraParams.id_token has the JSON Web Token
+		// profile has all the information from the user
+		return done(null, profile);
+	}
+));
+
+
 // Express View engine setup
 
 app.use(require('node-sass-middleware')({
